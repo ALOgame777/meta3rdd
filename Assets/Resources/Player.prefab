@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 597014715896621985}
   - component: {fileID: 6909385024163038827}
+  - component: {fileID: 8709067722799743542}
   - component: {fileID: 3242849716046328640}
   - component: {fileID: 8054139065187866691}
   - component: {fileID: 783946400243032567}
@@ -20,7 +21,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &597014715896621985
 Transform:
   m_ObjectHideFlags: 0
@@ -53,6 +54,20 @@ MonoBehaviour:
   speed: 4
   jumpPower: 3
   cam: {fileID: 6504367125505215802}
+--- !u!114 &8709067722799743542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754630641315236268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 439df84111dcc71478f304c143058f05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeFactory: {fileID: 5130987756240591005, guid: a5185e605c138784e9408d864eb94db3,
+    type: 3}
 --- !u!114 &3242849716046328640
 MonoBehaviour:
   m_ObjectHideFlags: 0
