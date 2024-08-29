@@ -12,6 +12,12 @@ public class PlayerFire : MonoBehaviourPun
 
     // Fx Prefab
     public GameObject fxFactory;
+
+    // 총알 프리팹
+    public GameObject bulletFactory;
+
+    // 총구의 Transform
+    public Transform firePos;
     void Start()
     {
         
@@ -22,8 +28,16 @@ public class PlayerFire : MonoBehaviourPun
         // 만약에 내 것이라면
         if (photonView.IsMine == false) return;
 
+        // 마우스 왼쪽 버튼 누르면
+        if (Input.GetMouseButtonDown(0))
+        {
+            // 총알 공장에서 총알을 생성, 총구위치 셋팅, 총구회전 셋팅
+            PhotonNetwork.Instantiate("Bullet", firePos.position, Camera.main.transform.rotation);
+            //photonView.RPC(nameof(Createbullet), RpcTarget.All, firePos.position, Camera.main.transform.rotation);
+
+        }
        // 마우스 오른쪽 버튼 누르면
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButtonDown(1))
         {
             // 카메라 위치, 카메라 앞방향으로 된 Ray를 만들자.
             Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
@@ -41,12 +55,18 @@ public class PlayerFire : MonoBehaviourPun
        // 1 번 키 누르면
         if (Input.GetKeyDown(KeyCode.Alpha1))
          {
-           // 카메라의 앞방향으로 5만큼 떨어진 위치를 구하자
-           Vector3 pos = Camera.main.transform.position + Camera.main.transform.forward * 5;
-           // 프리팹에서 큐브를 생성하고 싶다.
-           PhotonNetwork.Instantiate("Cube", pos, Quaternion.identity);
+            // 카메라의 앞방향으로 5만큼 떨어진 위치를 구하자
+            Vector3 pos = Camera.main.transform.position + Camera.main.transform.forward * 5;
+            //// 프리팹에서 큐브를 생성하고 싶다.
+            //PhotonNetwork.Instantiate("Cube", pos, Quaternion.identity);
+            photonView.RPC(nameof(CreateCube), RpcTarget.All, pos);
         }
 
+    }
+    [PunRPC]
+    public void Createbullet(Vector3 position, Quaternion rotation)
+    {
+        Instantiate(bulletFactory, position, rotation);
     }
 
 
@@ -55,5 +75,10 @@ public class PlayerFire : MonoBehaviourPun
     {
         GameObject fx = Instantiate(fxFactory);
         fx.transform.position = position;
+    }
+    [PunRPC]
+    public void CreateCube(Vector3 position)
+    {
+        Instantiate(cubeFactory, position, Quaternion.identity);
     }
 }

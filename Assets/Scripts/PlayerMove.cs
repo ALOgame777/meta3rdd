@@ -28,16 +28,14 @@ public class PlayerMove : MonoBehaviourPun,  IPunObservable
     // 보정 속력
     public float lerpSpeed = 50;
 
-    private void Awake()
-    {
-        // 커서를 윈도우 창 안에 고정
-        Cursor.lockState = CursorLockMode.Confined;
-        // 커서를 보이게 설정
-        Cursor.visible = true;
-    }
     void Start()
     {
-        //캐릭터 컨트롤러 가져오자
+        if (photonView.IsMine)
+        {
+            // 커서를 윈도우 창 안에 고정
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+         //캐릭터 컨트롤러 가져오자
         cc = GetComponent<CharacterController>();
         // 내 것일 때만 카메라를 활성화하자
         cam.SetActive(photonView.IsMine);
