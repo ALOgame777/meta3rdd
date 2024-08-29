@@ -4,7 +4,7 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using Photon.Pun;
 
-public class PlayerMove : MonoBehaviourPun
+public class PlayerMove : MonoBehaviourPun,  IPunObservable
 {
     // 이동 속력
     public float speed = 5;
@@ -21,9 +21,22 @@ public class PlayerMove : MonoBehaviourPun
     // 카메라
     public GameObject cam;
 
+    //서버에서 넘어오는 위치값
+    Vector3 receviePos;
+    // 서버에서 넘어오는 회전값
+    Quaternion receiveRot;
+    // 보정 속력
+    public float lerpSpeed = 50;
+
+    private void Awake()
+    {
+        // 커서를 윈도우 창 안에 고정
+        Cursor.lockState = CursorLockMode.Confined;
+        // 커서를 보이게 설정
+        Cursor.visible = true;
+    }
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
         //캐릭터 컨트롤러 가져오자
         cc = GetComponent<CharacterController>();
         // 내 것일 때만 카메라를 활성화하자
@@ -91,7 +104,35 @@ public class PlayerMove : MonoBehaviourPun
             //cc.Move(dir * Time.deltaTime);
             #endregion
         }
+        // 나의 player 아니라면
+        else
+        {
+            // 위치 보정
+            transform.position = Vector3.Lerp(transform.position, receviePos, Time.deltaTime * lerpSpeed);
+            // 회전 보정
+            transform.rotation = Quaternion.Lerp(transform.rotation, receiveRot, Time.deltaTime * lerpSpeed);
+        }
 
 
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        // 만약에 내가 데이터를 보낼 수 있는 상태라면 ( 내 것이라면)
+        if (stream.IsWriting)
+        {
+            // 나의 위치 값을 보낸다.
+            stream.SendNext(transform.position);
+            // 나의 회전 값을 보낸다.
+            stream.SendNext(transform.rotation);
+        }
+        // 데이터를 받을 수 있는 상태라면 (내 것이 아니라면)
+        else if(stream.IsReading)
+        {
+            // 위치 값을 받자.
+            receviePos = (Vector3)stream.ReceiveNext();
+            // 회전 값을 받자
+            receiveRot = (Quaternion)stream.ReceiveNext();
+        }
     }
 }

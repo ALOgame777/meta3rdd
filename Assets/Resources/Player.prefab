@@ -54,6 +54,7 @@ MonoBehaviour:
   speed: 4
   jumpPower: 3
   cam: {fileID: 6504367125505215802}
+  lerpSpeed: 50
 --- !u!114 &8709067722799743542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,6 +68,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubeFactory: {fileID: 5130987756240591005, guid: a5185e605c138784e9408d864eb94db3,
+    type: 3}
+  fxFactory: {fileID: 4021103657954561961, guid: 5c755f9bc5253ea418e919994537dcc7,
     type: 3}
 --- !u!114 &3242849716046328640
 MonoBehaviour:
@@ -127,9 +130,9 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 2
+  observableSearch: 0
   ObservedComponents:
-  - {fileID: 3691844523417622358}
+  - {fileID: 6909385024163038827}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
