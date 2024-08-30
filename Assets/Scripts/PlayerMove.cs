@@ -25,9 +25,17 @@ public class PlayerMove : MonoBehaviourPun,  IPunObservable
     Vector3 receviePos;
     // 서버에서 넘어오는 회전값
     Quaternion receiveRot;
+
+    // Animator
+    Animator anim;
     // 보정 속력
     public float lerpSpeed = 50;
 
+
+    // AD 키 입력 받을 변수
+    float h;
+    // WS 키 입력 받을 변수
+    float v;
     void Start()
     {
         if (photonView.IsMine)
@@ -39,7 +47,8 @@ public class PlayerMove : MonoBehaviourPun,  IPunObservable
         cc = GetComponent<CharacterController>();
         // 내 것일 때만 카메라를 활성화하자
         cam.SetActive(photonView.IsMine);
-        
+        // animator 가져오자
+        anim = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -61,8 +70,8 @@ public class PlayerMove : MonoBehaviourPun,  IPunObservable
         if (photonView.IsMine)
         {
             // 1. 키보드 wasd 키 입력을 받자
-            float h = Input.GetAxis("Horizontal");
-            float v = Input.GetAxis("Vertical");
+            h = Input.GetAxis("Horizontal");
+            v = Input.GetAxis("Vertical");
 
             // 2. 방향을 정하자.
             Vector3 dirH = transform.right * h;
@@ -101,6 +110,8 @@ public class PlayerMove : MonoBehaviourPun,  IPunObservable
             //dir.y = yVelocity;
             //cc.Move(dir * Time.deltaTime);
             #endregion
+
+            
         }
         // 나의 player 아니라면
         else
@@ -110,6 +121,10 @@ public class PlayerMove : MonoBehaviourPun,  IPunObservable
             // 회전 보정
             transform.rotation = Quaternion.Lerp(transform.rotation, receiveRot, Time.deltaTime * lerpSpeed);
         }
+
+        // anim을 이용해서 h, v 값을 전달
+        anim.SetFloat("DirH", h);
+        anim.SetFloat("DirV", v);
 
 
     }
@@ -123,6 +138,13 @@ public class PlayerMove : MonoBehaviourPun,  IPunObservable
             stream.SendNext(transform.position);
             // 나의 회전 값을 보낸다.
             stream.SendNext(transform.rotation);
+
+            // 나의 h 값
+            stream.SendNext(h);
+            // 나의 v값
+            stream.SendNext(v);
+
+            
         }
         // 데이터를 받을 수 있는 상태라면 (내 것이 아니라면)
         else if(stream.IsReading)
@@ -131,6 +153,10 @@ public class PlayerMove : MonoBehaviourPun,  IPunObservable
             receviePos = (Vector3)stream.ReceiveNext();
             // 회전 값을 받자
             receiveRot = (Quaternion)stream.ReceiveNext();
+            // 서버에서 전달 되는 h 값 받자.
+            h = (float)stream.ReceiveNext();
+            // 서버에서 전달 되는 v 값 받자.
+            v = (float)stream.ReceiveNext();
         }
     }
 }
