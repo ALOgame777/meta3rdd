@@ -36,6 +36,9 @@ public class PlayerMove : MonoBehaviourPun,  IPunObservable
     float h;
     // WS 키 입력 받을 변수
     float v;
+
+    // LookPos
+    public Transform lookPos;
     void Start()
     {
         if (photonView.IsMine)
@@ -144,8 +147,13 @@ public class PlayerMove : MonoBehaviourPun,  IPunObservable
             // 나의 v값
             stream.SendNext(v);
 
+            // LookPos의 위치 값을 보낸다.
+            stream.SendNext(lookPos.position);
+            
+
             
         }
+        // 보낼 때의 순서와 받았을 때 순서가 같아야 오류가 안난다.
         // 데이터를 받을 수 있는 상태라면 (내 것이 아니라면)
         else if(stream.IsReading)
         {
@@ -157,6 +165,8 @@ public class PlayerMove : MonoBehaviourPun,  IPunObservable
             h = (float)stream.ReceiveNext();
             // 서버에서 전달 되는 v 값 받자.
             v = (float)stream.ReceiveNext();
+            // LookPos의 위치값을 받자.
+            lookPos.position = (Vector3)stream.ReceiveNext();
         }
     }
 }
