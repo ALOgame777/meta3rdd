@@ -19,13 +19,13 @@ public class Bullet : MonoBehaviourPun
         if (photonView.IsMine)
         {
             rb = GetComponent<Rigidbody>();
-            rb.velocity = transform.forward * moveSpeed;
+            rb.velocity = transform.up * moveSpeed;
         }
     }
 
     void Update()
     {
-        //transform.position += transform.forward * moveSpeed * Time.deltaTime;
+        
     }
 
     private void OnTriggerEnter(Collider other)

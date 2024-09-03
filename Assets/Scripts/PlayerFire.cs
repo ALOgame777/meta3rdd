@@ -36,14 +36,15 @@ public class PlayerFire : MonoBehaviourPun
         {
             photonView.RPC(nameof(SetTrigger), RpcTarget.All, "Fire");
             // 총알 공장에서 총알을 생성, 총구위치 셋팅, 총구회전 셋팅
-            PhotonNetwork.Instantiate("Bullet", firePos.position, Camera.main.transform.rotation);
+            PhotonNetwork.Instantiate("Bullet", firePos.position, firePos.rotation);
             // 총 쏘는 애니메이션 실행 (Fire 트리거 발생)
-
+            // 만약 부딪힌 지점이 있으면
+            
         }
         // 마우스 가운데 버튼 눌렀을 때
         if(Input.GetMouseButtonDown(2))
         {
-            photonView.RPC(nameof(Createbullet), RpcTarget.All, firePos.position, Camera.main.transform.rotation);
+            photonView.RPC(nameof(Createbullet), RpcTarget.All, firePos.position, Camera.main.transform.position);
         }
 
        // 마우스 오른쪽 버튼 누르면
@@ -53,12 +54,21 @@ public class PlayerFire : MonoBehaviourPun
             Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
             // 만들어진 Ray를 이용해서 RayCast 하자
             RaycastHit hit;
+
+
             // 만약 부딪힌 지점이 있으면
             if (Physics.Raycast(ray, out hit))
             {
                 // 폭발 효과를 생성하고 부딪힌 위치에 놓자.
                 //CreateFX(hit.point);
                 photonView.RPC(nameof(CreateFX), RpcTarget.All, hit.point);
+
+                // 부딪힌 놈의 데미지를 주자.
+                PlayerFire pf =  hit.transform.GetComponent<PlayerFire>();
+                if (pf != null)
+                {
+                    pf.photonView.RPC(nameof(OnDamaged), RpcTarget.All);
+                }
             }
         }
         
@@ -73,6 +83,14 @@ public class PlayerFire : MonoBehaviourPun
         }
 
     }
+
+    [PunRPC]
+    void OnDamaged()
+    {
+        HPSystem hpSystemp =  GetComponentInChildren<HPSystem>();
+        hpSystemp.UpdateHP(-1);
+    }
+
     [PunRPC]
     void SetTrigger(string parameter)
     {
