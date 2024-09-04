@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
 using Photon.Pun;
+using TMPro;
 
 public class PlayerMove : MonoBehaviourPun,  IPunObservable
 {
@@ -39,8 +40,12 @@ public class PlayerMove : MonoBehaviourPun,  IPunObservable
 
     // LookPos
     public Transform lookPos;
+
+    // 닉네임 UI
+    public TMP_Text nickName;
     void Start()
     {
+        
         if (photonView.IsMine)
         {
             // 커서를 윈도우 창 안에 고정
@@ -52,6 +57,9 @@ public class PlayerMove : MonoBehaviourPun,  IPunObservable
         cam.SetActive(photonView.IsMine);
         // animator 가져오자
         anim = GetComponentInChildren<Animator>();
+
+        // 닉네임 UI 에 해당 캐릭터의 주인의 닉네임 설정
+        nickName.text = photonView.Owner.NickName;
     }
 
     void Update()
@@ -68,6 +76,8 @@ public class PlayerMove : MonoBehaviourPun,  IPunObservable
         //dir = transform.TransformDirection(dir);
         //dir.Normalize();
         //transform.position += dir * speed * Time.deltaTime;
+        // 마우스 lockMode가 none이면 (마우스 포인터가 활성화 되어 있다면) 함수를 나가자
+        if (Cursor.lockState == CursorLockMode.None) return;
 
         // 내것만 움직이자
         if (photonView.IsMine)

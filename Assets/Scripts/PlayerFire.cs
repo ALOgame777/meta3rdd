@@ -30,7 +30,8 @@ public class PlayerFire : MonoBehaviourPun
     {
         // 만약에 내 것이라면
         if (photonView.IsMine == false) return;
-
+        // 마우스 lockMode가 none이면 (마우스 포인터가 활성화 되어 있다면) 함수를 나가자
+        if (Cursor.lockState == CursorLockMode.None) return;
         // 마우스 왼쪽 버튼 누르면
         if (Input.GetMouseButtonDown(0))
         {

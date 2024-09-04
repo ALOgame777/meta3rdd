@@ -31,6 +31,9 @@ public class ObjRotate : MonoBehaviour
 
     public void CamRot()
     {
+        // 마우스 lockMode가 none이면 (마우스 포인터가 활성화 되어 있다면) 함수를 나가자
+        if (Cursor.lockState == CursorLockMode.None) return;
+
         //만약에 내것이라면
         if (pv.IsMine)
         {
