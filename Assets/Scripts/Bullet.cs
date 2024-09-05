@@ -8,7 +8,7 @@ public class Bullet : MonoBehaviourPun
     public float moveSpeed = 10;
 
     //Rigidbody
-    Rigidbody rb;
+    public Rigidbody rb;
 
     // 충돌 되었을 때 효과 Prefab
     public GameObject exploFactory;

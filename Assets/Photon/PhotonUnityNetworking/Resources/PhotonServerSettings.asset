@@ -47,6 +47,9 @@ MonoBehaviour:
   - OnDamage
   - OnDamaged
   - AddChat
+  - CreateBullet
+  - CreateImpact
+  - RpcUpdateHP
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
