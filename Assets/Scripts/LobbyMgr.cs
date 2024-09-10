@@ -12,6 +12,9 @@ public class LobbyMgr : MonoBehaviourPunCallbacks
     public TMP_InputField inputRoomName;
     // Input Max Player
     public TMP_InputField inputMaxPlayer;
+    // input password
+    public TMP_InputField inputPassword;
+
     // Create Button
     public Button btnCreate;
     //Join Button
@@ -42,6 +45,17 @@ public class LobbyMgr : MonoBehaviourPunCallbacks
         // 삭제
         //dic.Remove(12);
         //print(dic[12]); // 오류
+        #endregion
+        #region HashTable 사용 예제
+        //Dictionary<object, object> dic;
+
+        //Hashtable hash = new Hashtable();
+        //hash[12] = "값1"; // key : int, value  : string
+        //hash["나이"] = 27;// key : string, value  :  int
+        //hash["미성년자"] = false; // key : string, value  :  bool
+        //string str = (string)hash[12];
+        //int age = (int)hash["나이"];
+        //bool isMinor = (bool)hash["미성년자"];
         #endregion
     }
 
@@ -76,8 +90,22 @@ public class LobbyMgr : MonoBehaviourPunCallbacks
         RoomOptions options = new RoomOptions();
         // 최대 인원 설정
         options.MaxPlayers = int.Parse(inputMaxPlayer.text);
+        // 커스텀 정보 설정
+        ExitGames.Client.Photon.Hashtable customInfo = new ExitGames.Client.Photon.Hashtable();
+        //방 제목 만
+        customInfo["room_name"] = inputRoomName.text;
+        // 잠금 모드인지?
+        bool isLock = false;
+        if(inputPassword.text.Length > 0) isLock = true;
+        customInfo["lock_mode"] = isLock;
+        options.CustomRoomProperties = customInfo;
+
+        // 커스텀 정보를 Lobby에서 사용할 수 있게 설정
+        //로비에서 알아야할 커스텀 정보의 key 값들[ ]
+        string[] customKeys = { "room_name", "lock_mode" };
+        options.CustomRoomPropertiesForLobby = customKeys;
         // 방 옵션을 기반으로 방을 생성
-        PhotonNetwork.CreateRoom(inputRoomName.text, options);
+        PhotonNetwork.CreateRoom(inputRoomName.text + inputPassword.text, options);
     }
     public override void OnCreatedRoom()
     {
@@ -93,7 +121,7 @@ public class LobbyMgr : MonoBehaviourPunCallbacks
     public void JoinRoom()
     {
         // 방 입장 요청
-        PhotonNetwork.JoinRoom(inputRoomName.text);
+        PhotonNetwork.JoinRoom(inputRoomName.text+ inputPassword.text);
     }
 
     public override void OnJoinedRoom()
@@ -176,9 +204,20 @@ public class LobbyMgr : MonoBehaviourPunCallbacks
             // roomItem prefab을 이용해서 roomItem 을 만든다.
             GameObject go = Instantiate(roomItemFactory, trContent);
             // 만들어진 roomItem 의 내용을 변경
-            //tmp_text 가져오자
-            TMP_Text roomItem =  go.GetComponentInChildren<TMP_Text>();
-            roomItem.text = info.Name + " ( " + info.PlayerCount + "/" + info.MaxPlayers + ")";
+            // rome Item 컴포넌트를 가져오자 tmp_text 가져오자
+            RoomItem roomItem =  go.GetComponent<RoomItem>();
+            // 커스텀 정보 중 방 이름 가져오자.
+            string roomName = (string)info.CustomProperties["room_name"];
+
+            // 커스텀 정보 중 잠금 모드 가져오자
+            bool isLock = (bool)info.CustomProperties["lock_mode"];
+
+            // 가져온 컴포넌트에 정보를 입력
+            roomItem.SetConent(roomName, info.PlayerCount, info.MaxPlayers);
+            // 잠금 모드 표현
+            roomItem.SetLockMode(isLock);
+            // roomItem 이 클릭되었을 때 호출되는 함수 등록
+            roomItem.onChangeRoomName = OnChangeRoomNameField;
 
         }
     }
@@ -190,5 +229,10 @@ public class LobbyMgr : MonoBehaviourPunCallbacks
         {
             Destroy(trContent.GetChild(i).gameObject);
         }
+    }
+
+    void OnChangeRoomNameField(string roomName)
+    {
+        inputRoomName.text = roomName;
     }
 }
