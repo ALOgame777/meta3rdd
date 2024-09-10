@@ -99,10 +99,13 @@ public class LobbyMgr : MonoBehaviourPunCallbacks
         if(inputPassword.text.Length > 0) isLock = true;
         customInfo["lock_mode"] = isLock;
         options.CustomRoomProperties = customInfo;
+        // 선택된 map (0,1,2)
+        int map = Random.Range(0, 3);
+        customInfo["map"] = map;
 
         // 커스텀 정보를 Lobby에서 사용할 수 있게 설정
         //로비에서 알아야할 커스텀 정보의 key 값들[ ]
-        string[] customKeys = { "room_name", "lock_mode" };
+        string[] customKeys = { "room_name", "lock_mode", "map" };
         options.CustomRoomPropertiesForLobby = customKeys;
         // 방 옵션을 기반으로 방을 생성
         PhotonNetwork.CreateRoom(inputRoomName.text + inputPassword.text, options);
@@ -212,10 +215,15 @@ public class LobbyMgr : MonoBehaviourPunCallbacks
             // 커스텀 정보 중 잠금 모드 가져오자
             bool isLock = (bool)info.CustomProperties["lock_mode"];
 
+            // 커스텀 정보 중 맵 종류 가져오자
+            int map = (int)info.CustomProperties["map"];
+
             // 가져온 컴포넌트에 정보를 입력
             roomItem.SetConent(roomName, info.PlayerCount, info.MaxPlayers);
             // 잠금 모드 표현
             roomItem.SetLockMode(isLock);
+            // roomItem 에 MapIndex 전달
+            roomItem.SetMapIndex(map);
             // roomItem 이 클릭되었을 때 호출되는 함수 등록
             roomItem.onChangeRoomName = OnChangeRoomNameField;
 
@@ -231,8 +239,16 @@ public class LobbyMgr : MonoBehaviourPunCallbacks
         }
     }
 
-    void OnChangeRoomNameField(string roomName)
+    // Map Image 담을 변수
+    public Image imgMap;
+    // Map Sprite 들 담을 변수
+    public Sprite[] mapThumdnails;
+    void OnChangeRoomNameField(string roomName, int mapIdx)
     {
+        // 방 이름 설정
         inputRoomName.text = roomName;
+
+        // mapIdx 에 따라서 맵 이미지 보이게 하자
+        imgMap.sprite = mapThumdnails[mapIdx];
     }
 }

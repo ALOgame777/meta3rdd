@@ -12,9 +12,11 @@ public class RoomItem : MonoBehaviour
     public GameObject imgLock;
     // 방 이름
     string realRoomName;
+    // map index
+    int mapIndex;
 
     // 클릭 되었을 때 호출되는 함수를 가지고 있는 변수
-    public Action<string> onChangeRoomName;
+    public Action<string, int> onChangeRoomName;
    
     public void SetConent(string roomName, int currPlayer, int maxPlayer)
     {
@@ -31,16 +33,20 @@ public class RoomItem : MonoBehaviour
         imgLock.SetActive(isLock);
     }
 
+    public void SetMapIndex(int index)
+    {
+        mapIndex = index;
+        // 추가 적으로 mapIndex에 따른 이미지 보여줄 수 있음..
+    }
+
     public void OnClick()
     {
         // 만약에 onChangeRoomName 에 함수가 들어있다면
         if(onChangeRoomName != null)
         {
             // 해당 함수 실행
-            onChangeRoomName(realRoomName);
+            onChangeRoomName(realRoomName, mapIndex);
         }
-
-
         //// 1. InputRoomName 게임오브젝트 찾자
         //GameObject go = GameObject.Find("InputRoomName");
         //// 2.찾은 게임 오브젝트에서 TMP_InptField 컴포넌트 가져오자
