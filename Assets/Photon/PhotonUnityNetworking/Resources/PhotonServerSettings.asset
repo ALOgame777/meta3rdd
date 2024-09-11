@@ -16,7 +16,7 @@ MonoBehaviour:
     AppIdRealtime: 257ec520-f121-49db-b83c-0e23d3553190
     AppIdFusion: 
     AppIdChat: 
-    AppIdVoice: 
+    AppIdVoice: 995a57ca-1d43-423d-ad30-8dfbd9c9fdb7
     AppVersion: 1.0
     UseNameServer: 1
     FixedRegion: kr
@@ -50,6 +50,9 @@ MonoBehaviour:
   - CreateBullet
   - CreateImpact
   - RpcUpdateHP
+  - CantHearYou
+  - ChangeColour
+  - HeresWhy
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

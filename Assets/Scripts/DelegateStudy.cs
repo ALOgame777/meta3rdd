@@ -36,7 +36,6 @@ public class DelegateStudy : MonoBehaviour
         action2("dddd");
     }
 
-    // Update is called once per frame
     void Update()
     {
         
