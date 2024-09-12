@@ -15,11 +15,11 @@ MonoBehaviour:
   AppSettings:
     AppIdRealtime: 257ec520-f121-49db-b83c-0e23d3553190
     AppIdFusion: 
-    AppIdChat: 
+    AppIdChat: e9162bd6-1215-473d-b995-7e0fa3e2e555
     AppIdVoice: 995a57ca-1d43-423d-ad30-8dfbd9c9fdb7
     AppVersion: 1.0
     UseNameServer: 1
-    FixedRegion: kr
+    FixedRegion: asia
     Server: 
     Port: 0
     ProxyServer: 
@@ -53,6 +53,7 @@ MonoBehaviour:
   - CantHearYou
   - ChangeColour
   - HeresWhy
+  - RpcSetReady
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

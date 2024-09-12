@@ -131,7 +131,7 @@ public class LobbyMgr : MonoBehaviourPunCallbacks
     {
         base.OnJoinedRoom();
         print("방 입장 완료");
-        PhotonNetwork.LoadLevel("GameScene");
+        PhotonNetwork.LoadLevel("WaitingScene");
 
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
