@@ -287,7 +287,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisconnectAfterKeepAlive: 0
   KeepAliveInBackground: 60000
-  ApplyDontDestroyOnLoad: 1
+  ApplyDontDestroyOnLoad: 0
   runInBackground: 1
   statsResetInterval: 1000
   speakerPrefab: {fileID: 3051610175859297680, guid: dd1c2caf164ac574db94691e5900f3a1,
@@ -854,6 +854,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1823714722}
   - component: {fileID: 1823714721}
+  - component: {fileID: 1823714723}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -875,6 +876,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPos: []
   trSpownPointGroup: {fileID: 485393349}
+  allPlayer: []
 --- !u!4 &1823714722
 Transform:
   m_ObjectHideFlags: 0
@@ -890,6 +892,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1823714723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823714720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 5
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!114 &9942853997063748
 MonoBehaviour:
   m_ObjectHideFlags: 0

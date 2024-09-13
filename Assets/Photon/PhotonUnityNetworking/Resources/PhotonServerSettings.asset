@@ -16,7 +16,7 @@ MonoBehaviour:
     AppIdRealtime: 257ec520-f121-49db-b83c-0e23d3553190
     AppIdFusion: 
     AppIdChat: e9162bd6-1215-473d-b995-7e0fa3e2e555
-    AppIdVoice: 995a57ca-1d43-423d-ad30-8dfbd9c9fdb7
+    AppIdVoice: 9358208a-fbd9-4a23-acd5-574bbc387e16
     AppVersion: 1.0
     UseNameServer: 1
     FixedRegion: asia
@@ -34,26 +34,25 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
+  - AddChat
+  - CantHearYou
+  - ChangeColour
   - ClickRpc
+  - CreateBullet
+  - CreateCube
+  - CreateImpact
+  - CreatExplo
   - DestroyRpc
   - DestroySpaceship
   - Fire
-  - RespawnSpaceship
-  - CreateFX
-  - CreateCube
-  - Createbullet
-  - CreatExplo
-  - SetTrigger
-  - OnDamage
-  - OnDamaged
-  - AddChat
-  - CreateBullet
-  - CreateImpact
-  - RpcUpdateHP
-  - CantHearYou
-  - ChangeColour
   - HeresWhy
+  - RespawnSpaceship
+  - RpcAddPlayer
+  - RpcChageTurn
+  - RpcChangeTurn
   - RpcSetReady
+  - RpcUpdateHP
+  - SetTrigger
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

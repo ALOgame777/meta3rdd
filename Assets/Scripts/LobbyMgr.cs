@@ -21,7 +21,8 @@ public class LobbyMgr : MonoBehaviourPunCallbacks
     public Button btnJoin;
     //전체 방에 대한 정보
     Dictionary<string, RoomInfo> allRoomInfo = new Dictionary<string, RoomInfo>();
-
+      
+       
     void Start()
     {
         // 로비 진입
@@ -90,6 +91,7 @@ public class LobbyMgr : MonoBehaviourPunCallbacks
         RoomOptions options = new RoomOptions();
         // 최대 인원 설정
         options.MaxPlayers = int.Parse(inputMaxPlayer.text);
+        options.IsVisible = true;
         // 커스텀 정보 설정
         ExitGames.Client.Photon.Hashtable customInfo = new ExitGames.Client.Photon.Hashtable();
         //방 제목 만
@@ -115,6 +117,7 @@ public class LobbyMgr : MonoBehaviourPunCallbacks
         base.OnCreatedRoom();
         print("방 생성 완료");
     }
+
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
@@ -152,6 +155,7 @@ public class LobbyMgr : MonoBehaviourPunCallbacks
     {
         base.OnRoomListUpdate(roomList);
 
+        print("------------ " + roomList.Count);
         // 방 목록 UI를 전체 삭제
         RemoveRoomList();
 
@@ -191,7 +195,10 @@ public class LobbyMgr : MonoBehaviourPunCallbacks
             {
                 // allRoomInfo 추가
                 //allRoomInfo.Add(roomList[i].Name, roomList[i]);
-                allRoomInfo[roomList[i].Name] = roomList[i];
+                if (roomList[i].RemovedFromList == false)
+                {
+                    allRoomInfo[roomList[i].Name] = roomList[i];
+                }
             }
         }
     }

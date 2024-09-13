@@ -43,13 +43,24 @@ public class PlayerMove : MonoBehaviourPun,  IPunObservable
 
     // 닉네임 UI
     public TMP_Text nickName;
+
+    [PunRPC]
+    void RpcAddPlayer(int order)
+    {
+        // GameManger 에게 photonView 를 넘겨주자
+        GameManager.Instance.AddPlayer(photonView, order);
+    }
     void Start()
     {
         
+
         if (photonView.IsMine)
         {
             // 커서를 윈도우 창 안에 고정
             Cursor.lockState = CursorLockMode.Locked;
+
+            // 내가 방에 들어온 순서를 모두에게 알려주자.
+            photonView.RPC(nameof(RpcAddPlayer), RpcTarget.AllBuffered, ProjectMgr.Get().orderInRoom);
         }
          //캐릭터 컨트롤러 가져오자
         cc = GetComponent<CharacterController>();
